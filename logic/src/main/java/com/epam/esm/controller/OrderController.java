@@ -5,6 +5,7 @@ import com.epam.esm.link.OrderLinkProvider;
 import com.epam.esm.model.CreateOrderDto;
 import com.epam.esm.model.Order;
 import com.epam.esm.service.api.OrderService;
+import com.epam.esm.validator.impl.RequestParametersValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,18 +30,25 @@ public class OrderController {
 
     private final OrderService orderService;
     private final OrderLinkProvider orderLinkProvider;
+    private final RequestParametersValidator requestParametersValidator;
+
 
     @Autowired
     public OrderController(OrderService orderService,
-                           OrderLinkProvider orderLinkProvider) {
+                           OrderLinkProvider orderLinkProvider,
+                           RequestParametersValidator requestParametersValidator) {
         this.orderService = orderService;
         this.orderLinkProvider = orderLinkProvider;
+        this.requestParametersValidator = requestParametersValidator;
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Order> findAll(@RequestParam(name = PAGE, required = false, defaultValue = DEFAULT_PAGE) int page,
                                @RequestParam(name = SIZE, required = false, defaultValue = DEFAULT_SIZE) int size) {
+
+        requestParametersValidator.paginationParamValid(page, size);
+
         List<Order> orders = orderService.findAll(page, size);
 
         for (Order order : orders) {

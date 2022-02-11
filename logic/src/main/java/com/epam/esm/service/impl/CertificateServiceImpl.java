@@ -54,7 +54,7 @@ public class CertificateServiceImpl implements CertificateService {
                                   TagValidator tagValidator,
                                   CertificateValidator certificateValidator,
                                   TagService tagService
-                                  ) {
+    ) {
         this.certificateDao = certificateDao;
         this.tagDao = tagDao;
         this.tagValidator = tagValidator;
@@ -63,16 +63,9 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
 
-
-
-    ///todo не создается если тег уже существует разобраться !!!!!
-
     @Override
     @Transactional
-    public int create(Certificate certificate) {
-       // Certificate certificate = certificateDto.getCertificate();
-        Set<Tag> tags = new HashSet();
-
+    public void create(Certificate certificate) {
         List<Tag> tagsToAdd = new ArrayList<>();
         if (certificate.getTagList() != null) {
             for (Tag tag : certificate.getTagList()) {
@@ -85,15 +78,7 @@ public class CertificateServiceImpl implements CertificateService {
             }
         }
         certificate.setTagList(tagsToAdd);
-        //tags.addAll(certificate.getTagList());
-        //validateForExistTag(tags);
         certificateDao.create(certificate);
-
-
-        //todo check
-       // certificateWithTag.create(certificate, tags);
-
-        return 1;
     }
 
     private void validateForExistTag(Set<Tag> tags) {
@@ -129,7 +114,6 @@ public class CertificateServiceImpl implements CertificateService {
         return certificateOptional.get();
     }
 
-    
 
     @Override
     public void deleteById(long id) {
@@ -139,7 +123,6 @@ public class CertificateServiceImpl implements CertificateService {
         }
         certificateDao.deleteById(id);
     }
-
 
 
     //todo

@@ -28,12 +28,11 @@ public class TagServiceImpl implements TagService {
 
     }
 
-    public int create(Tag tag) {
+    public void create(Tag tag) {
         validator.isValid(tag);
         validateForExistTag(tag);
         tagDao.create(tag);
 
-        return 1;
     }
 
     private void validateForExistTag(Tag tag) {

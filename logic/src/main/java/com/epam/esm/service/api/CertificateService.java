@@ -11,7 +11,7 @@ public interface CertificateService {
      * @param entity certificate and list tags
      * @return id certificate
      */
-    int create(Certificate entity);
+    void create(Certificate entity);
 
     /**
      * @return list of certificates

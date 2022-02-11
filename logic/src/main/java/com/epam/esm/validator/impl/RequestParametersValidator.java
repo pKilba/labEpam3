@@ -4,7 +4,7 @@ import com.epam.esm.exception.ValidationException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RequestParamValidator {
+public class RequestParametersValidator {
 
     private final int NUMBER_MIN = 0;
 

@@ -7,6 +7,7 @@ import com.epam.esm.model.Order;
 import com.epam.esm.model.User;
 import com.epam.esm.service.api.OrderService;
 import com.epam.esm.service.api.UserService;
+import com.epam.esm.validator.impl.RequestParametersValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,14 +33,17 @@ public class UserController {
     private final OrderService orderService;
     private final UserLinkProvider userLinkProvider;
     private final OrderLinkProvider orderLinkProvider;
+    private final RequestParametersValidator requestParametersValidator;
 
     @Autowired
     public UserController(UserService userService,
-                          OrderService orderService, UserLinkProvider userLinkProvider, OrderLinkProvider orderLinkProvider) {
+                          OrderService orderService, UserLinkProvider userLinkProvider, OrderLinkProvider orderLinkProvider,
+                          RequestParametersValidator requestParametersValidator) {
         this.userService = userService;
         this.orderService = orderService;
         this.userLinkProvider = userLinkProvider;
         this.orderLinkProvider = orderLinkProvider;
+        this.requestParametersValidator = requestParametersValidator;
     }
 
     @GetMapping
@@ -48,7 +52,7 @@ public class UserController {
             @RequestParam(value = PAGE, required = false, defaultValue = DEFAULT_PAGE) int page,
             @RequestParam(value = SIZE, required = false, defaultValue = DEFAULT_SIZE) int size)
             throws InvalidParameterException {
-
+        requestParametersValidator.paginationParamValid(page, size);
         List<User> users = userService.findAll(page, size);
 
         for (User user : users) {
@@ -63,6 +67,9 @@ public class UserController {
     public List<User> findByMostCost(@RequestParam(value = PAGE, required = false, defaultValue = DEFAULT_PAGE) int page,
                                      @RequestParam(value = SIZE, required = false,
                                              defaultValue = DEFAULT_SIZE) int size) {
+
+        requestParametersValidator.paginationParamValid(page, size);
+
         List<User> users = userService.findByMostCost(page, size);
         for (User user : users) {
             userLinkProvider.provideLinks(user);
@@ -74,6 +81,9 @@ public class UserController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public User findById(@PathVariable long id) throws NotFoundEntityException {
+
+        requestParametersValidator.idParamValid(id);
+
         User user = userService.findById(id);
         userLinkProvider.provideLinks(user);
         return user;
@@ -85,6 +95,8 @@ public class UserController {
     public Order findOrderByUserId(
             @PathVariable(value = "id") long id,
             @PathVariable(value = "orderId") long orderId) throws NotFoundEntityException {
+        requestParametersValidator.idParamValid(id);
+        requestParametersValidator.idParamValid(orderId);
         Order orderDto = orderService.findByUserId(id, orderId);
         orderLinkProvider.provideLinks(orderDto);
         return orderDto;
@@ -98,6 +110,7 @@ public class UserController {
             @RequestParam(value = PAGE, required = false, defaultValue = DEFAULT_PAGE) int page,
             @RequestParam(value = SIZE, required = false, defaultValue = DEFAULT_SIZE) int size
     ) throws InvalidParameterException, NotFoundEntityException {
+        requestParametersValidator.paginationParamValid(page, size);
         List<Order> orders = orderService.findAllByUserId(id, page, size);
         for (Order order : orders) {
             orderLinkProvider.provideLinks(order);

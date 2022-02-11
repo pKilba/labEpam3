@@ -8,8 +8,11 @@ import java.util.List;
 
 public interface UserService {
 
-    public List<User> findAll(int page, int size);
+    List<User> findAll(int page, int size);
+
     User findById(long id) throws NotFoundEntityException;
+
     void addSpentMoney(long id, BigDecimal addedValue) throws NotFoundEntityException;
-    public List <User> findByMostCost(int page,int size);
+
+    List<User> findByMostCost(int page, int size);
 }

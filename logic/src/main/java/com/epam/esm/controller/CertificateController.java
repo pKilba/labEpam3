@@ -5,7 +5,7 @@ import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.link.CertificateLinkProvider;
 import com.epam.esm.model.Certificate;
 import com.epam.esm.service.api.CertificateService;
-import com.epam.esm.validator.impl.RequestParamValidator;
+import com.epam.esm.validator.impl.RequestParametersValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,15 +38,15 @@ public class CertificateController {
 
     private final CertificateService certificateService;
     private final CertificateLinkProvider certificateLinkProvider;
-    private final RequestParamValidator requestParamValidator;
+    private final RequestParametersValidator requestParametersValidator;
 
     @Autowired
     public CertificateController(CertificateService certificateService,
                                  CertificateLinkProvider giftCertificateLinkProvider,
-                                 RequestParamValidator requestParamValidator) {
+                                 RequestParametersValidator requestParametersValidator) {
         this.certificateService = certificateService;
         this.certificateLinkProvider = giftCertificateLinkProvider;
-        this.requestParamValidator = requestParamValidator;
+        this.requestParametersValidator = requestParametersValidator;
     }
 
     @PostMapping
@@ -68,7 +68,7 @@ public class CertificateController {
     ) {
 
 
-        requestParamValidator.paginationParamValid(page, size);
+        requestParametersValidator.paginationParamValid(page, size);
         List<Certificate> certificates = certificateService.findAll(tagNames, partName, page, size);
 
         for (Certificate certificate : certificates) {
@@ -86,7 +86,7 @@ public class CertificateController {
                                      @RequestBody CertificateDto сertificateDto) {
 
 
-        requestParamValidator.idParamValid(id);
+        requestParametersValidator.idParamValid(id);
         return certificateService.updateById(id, сertificateDto);
 
     }
@@ -96,7 +96,7 @@ public class CertificateController {
     @Transactional
     public Certificate findById(@PathVariable("id") int id) {
 
-        requestParamValidator.idParamValid(id);
+        requestParametersValidator.idParamValid(id);
         Certificate certificate = certificateService.findById(id);
 
         certificateLinkProvider.provideLinks(certificate);
@@ -108,7 +108,7 @@ public class CertificateController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
     public void deleteById(@PathVariable("id") int id) {
-        requestParamValidator.idParamValid(id);
+        requestParametersValidator.idParamValid(id);
         certificateService.deleteById(id);
     }
 

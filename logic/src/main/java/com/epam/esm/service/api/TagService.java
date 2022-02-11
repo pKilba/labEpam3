@@ -10,7 +10,7 @@ public interface TagService {
      * @param entity some tag
      * @return id tag
      */
-    int create(Tag entity);
+    void create(Tag entity);
 
 
     /**
