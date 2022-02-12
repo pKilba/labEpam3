@@ -74,7 +74,7 @@ public class AbstractRepository<T> {
     }
 
 
-    public void deleteById(long id) {
+    public void deleteById(int id) {
         T entity = entityManager.find(entityClass, id);
         if (entity != null) {
             entityManager.remove(entity);

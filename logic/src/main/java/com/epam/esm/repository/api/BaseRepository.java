@@ -14,5 +14,5 @@ public interface BaseRepository<T> {
 
     T update(T entity);
 
-    void deleteById(long id);
+    void deleteById(int id);
 }

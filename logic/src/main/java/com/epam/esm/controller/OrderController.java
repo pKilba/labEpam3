@@ -51,9 +51,8 @@ public class OrderController {
 
         List<Order> orders = orderService.findAll(page, size);
 
-        for (Order order : orders) {
-            orderLinkProvider.provideLinks(order);
-        }
+        orders.forEach(orderLinkProvider::provideLinks);
+
 
         return orders;
     }

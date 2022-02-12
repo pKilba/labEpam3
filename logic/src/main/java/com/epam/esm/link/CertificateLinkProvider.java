@@ -5,20 +5,20 @@ import com.epam.esm.model.Certificate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CertificateLinkProvider extends AbstractLinkProvider<Certificate>{
+public class CertificateLinkProvider extends AbstractLinkProvider<Certificate> {
     private static final Class<CertificateController>
             CONTROLLER_CLASS = CertificateController.class;
-    private final TagLinkProvider tagDtoLinkProvider;
+    private final TagLinkProvider tagLinkProvider;
 
-    public CertificateLinkProvider(TagLinkProvider tagDtoLinkProvider) {
-        this.tagDtoLinkProvider = tagDtoLinkProvider;
+    public CertificateLinkProvider(TagLinkProvider tagLinkProvider) {
+        this.tagLinkProvider = tagLinkProvider;
     }
 
     public void provideLinks(Certificate certificate) {
         long id = certificate.getId();
         provideIdLinks(CONTROLLER_CLASS, certificate, id, SELF_LINK, UPDATE_LINK, REPLACE_LINK, DELETE_LINK);
-//todo добавить мб тегит сертификата в этот хатеос
-
-
+        if (certificate.getTagList() != null) {
+            certificate.getTagList().forEach(tagLinkProvider::provideLinks);
+        }
     }
 }

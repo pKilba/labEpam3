@@ -69,10 +69,8 @@ public class CertificateController {
 
         requestParametersValidator.paginationParamValid(page, size);
         List<Certificate> certificates = certificateService.findAll(tagNames, partName, page, size);
+        certificates.forEach(certificateLinkProvider::provideLinks);
 
-        for (Certificate certificate : certificates) {
-            certificateLinkProvider.provideLinks(certificate);
-        }
         return certificates;
     }
 
@@ -82,7 +80,7 @@ public class CertificateController {
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     public Certificate updateById(@PathVariable("id") int id,
-                                     @RequestBody Certificate сertificate) {
+                                  @RequestBody Certificate сertificate) {
 
 
         requestParametersValidator.idParamValid(id);

@@ -54,10 +54,7 @@ public class UserController {
             throws InvalidParameterException {
         requestParametersValidator.paginationParamValid(page, size);
         List<User> users = userService.findAll(page, size);
-
-        for (User user : users) {
-            userLinkProvider.provideLinks(user);
-        }
+        users.forEach(userLinkProvider::provideLinks);
         return users;
     }
 
@@ -69,11 +66,8 @@ public class UserController {
                                              defaultValue = DEFAULT_SIZE) int size) {
 
         requestParametersValidator.paginationParamValid(page, size);
-
         List<User> users = userService.findByMostCost(page, size);
-        for (User user : users) {
-            userLinkProvider.provideLinks(user);
-        }
+        users.forEach(userLinkProvider::provideLinks);
         return users;
     }
 
@@ -83,7 +77,6 @@ public class UserController {
     public User findById(@PathVariable long id) throws NotFoundEntityException {
 
         requestParametersValidator.idParamValid(id);
-
         User user = userService.findById(id);
         userLinkProvider.provideLinks(user);
         return user;
@@ -112,9 +105,8 @@ public class UserController {
     ) throws InvalidParameterException, NotFoundEntityException {
         requestParametersValidator.paginationParamValid(page, size);
         List<Order> orders = orderService.findAllByUserId(id, page, size);
-        for (Order order : orders) {
-            orderLinkProvider.provideLinks(order);
-        }
+
+        orders.forEach(orderLinkProvider::provideLinks);
         return orders;
     }
 }

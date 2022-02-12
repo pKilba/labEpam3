@@ -29,7 +29,7 @@ public interface CertificateService {
     /**
      * @param id id certificate
      */
-    void deleteById(long id);
+    void deleteById(int id);
 
     /**
      * @param id             id certificate

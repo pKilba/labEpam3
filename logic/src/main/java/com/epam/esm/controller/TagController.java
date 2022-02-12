@@ -60,10 +60,11 @@ public class TagController {
 
         requestParametersValidator.paginationParamValid(page, size);
 
+
+
         List<Tag> tags = tagService.findAll(page, size);
-        for (Tag tag : tags) {
-            tagLinkProvider.provideLinks(tag);
-        }
+        tags.forEach(tagLinkProvider::provideLinks);
+
         return tags;
     }
 
@@ -78,6 +79,8 @@ public class TagController {
         return tag;
     }
 
+
+    //todo not work
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional

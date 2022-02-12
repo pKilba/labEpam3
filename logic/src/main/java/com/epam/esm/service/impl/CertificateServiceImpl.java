@@ -97,7 +97,7 @@ public class CertificateServiceImpl implements CertificateService {
 
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(int id) {
         Optional<Certificate> certificateOptional = certificateDao.findById(id);
         if (!certificateOptional.isPresent()) {
             throw new NotFoundEntityException(CERTIFICATE_NOT_FOUND);
@@ -114,20 +114,20 @@ public class CertificateServiceImpl implements CertificateService {
 
 
         //todo вынести в отдельную логику ??
-        if (certificate.getName() != presentCertificate.getName()) {
+        if (certificate.getName() != presentCertificate.getName() && certificate.getName() != null) {
             presentCertificate.setName(certificate.getName());
         }
-//        if (certificate.getDescription() != presentCertificate.getDescription()) {
-//            presentCertificate.setDescription(certificate.getDescription());
-//        }
-//
-//        if (certificate.getPrice() != presentCertificate.getPrice()) {
-//            presentCertificate.setPrice(certificate.getPrice());
-//        }
-//
-//        if (certificate.getDuration() != presentCertificate.getDuration()) {
-//            presentCertificate.setDuration(certificate.getDuration());
-//        }
+        if (certificate.getDescription() != presentCertificate.getDescription() && certificate.getDescription() != null) {
+            presentCertificate.setDescription(certificate.getDescription());
+        }
+
+        if (certificate.getPrice() != presentCertificate.getPrice() && certificate.getPrice() != null) {
+            presentCertificate.setPrice(certificate.getPrice());
+        }
+
+        if (certificate.getDuration() != presentCertificate.getDuration() && certificate.getDuration() != 0) {
+            presentCertificate.setDuration(certificate.getDuration());
+        }
 
 
         if (certificate.getTagList() != null) {
