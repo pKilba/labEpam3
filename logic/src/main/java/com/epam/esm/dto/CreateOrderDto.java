@@ -1,4 +1,4 @@
-package com.epam.esm.model;
+package com.epam.esm.dto;
 
 import com.sun.istack.NotNull;
 

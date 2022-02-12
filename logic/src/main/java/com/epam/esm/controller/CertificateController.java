@@ -1,7 +1,6 @@
 package com.epam.esm.controller;
 
 
-import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.link.CertificateLinkProvider;
 import com.epam.esm.model.Certificate;
 import com.epam.esm.service.api.CertificateService;
@@ -82,12 +81,12 @@ public class CertificateController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    public CertificateDto updateById(@PathVariable("id") int id,
-                                     @RequestBody CertificateDto сertificateDto) {
+    public Certificate updateById(@PathVariable("id") int id,
+                                     @RequestBody Certificate сertificate) {
 
 
         requestParametersValidator.idParamValid(id);
-        return certificateService.updateById(id, сertificateDto);
+        return certificateService.updateById(id, сertificate);
 
     }
 

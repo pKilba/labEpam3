@@ -2,7 +2,7 @@ package com.epam.esm.controller;
 
 import com.epam.esm.exception.NotFoundEntityException;
 import com.epam.esm.link.OrderLinkProvider;
-import com.epam.esm.model.CreateOrderDto;
+import com.epam.esm.dto.CreateOrderDto;
 import com.epam.esm.model.Order;
 import com.epam.esm.service.api.OrderService;
 import com.epam.esm.validator.impl.RequestParametersValidator;

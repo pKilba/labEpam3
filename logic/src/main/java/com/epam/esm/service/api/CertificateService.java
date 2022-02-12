@@ -1,6 +1,5 @@
 package com.epam.esm.service.api;
 
-import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.model.Certificate;
 
 import java.util.List;
@@ -37,7 +36,7 @@ public interface CertificateService {
      * @param сertificateDto certificate and set tag
      * @return certificate and set tag
      */
-    CertificateDto updateById(int id, CertificateDto сertificateDto);
+    Certificate updateById(int id, Certificate сertificateDto);
 
 
 }

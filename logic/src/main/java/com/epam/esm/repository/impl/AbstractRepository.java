@@ -49,6 +49,7 @@ public class AbstractRepository<T> {
     }
 
     public T update(T entity) {
+
         return entityManager.merge(entity);
     }
 

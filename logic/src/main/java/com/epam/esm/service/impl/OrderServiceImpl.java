@@ -2,7 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.exception.NotFoundEntityException;
 import com.epam.esm.model.Certificate;
-import com.epam.esm.model.CreateOrderDto;
+import com.epam.esm.dto.CreateOrderDto;
 import com.epam.esm.model.Order;
 import com.epam.esm.repository.api.CertificateRepository;
 import com.epam.esm.repository.api.OrderRepository;
@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = NotFoundEntityException.class)
     public Order create(CreateOrderDto createOrderDto) throws NotFoundEntityException {
         Order order = new Order();
-        Certificate certificate = certificateRepository.findById(createOrderDto.getCertificateId()).get();
+        Certificate certificate = certificateRepository.findById(createOrderDto.getCertificateId()).orElseThrow(()->new NotFoundEntityException("Not found Certificate"));
         order.setCost(certificate.getPrice());
         order.setUser(createOrderDto.getUserId());
         order.setCertificate(createOrderDto.getCertificateId());
@@ -62,10 +62,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     public Order findByUserId(long userId, long orderId) throws NotFoundEntityException {
-        //todo add valid
-        Order order = orderRepository.findById(orderId).get();
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new NotFoundEntityException("Not found order"));
         if (order.getUser() != userId) {
-            //todo return thr
+            //todo заменить на другой эксепшнл
+            throw new NotFoundEntityException("Данный ордер принадлежит дугому пользователю");
         }
         return order;
     }

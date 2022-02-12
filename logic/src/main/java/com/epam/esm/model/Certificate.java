@@ -25,7 +25,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "certificates")
 public class Certificate extends RepresentationModel<Certificate> {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -49,9 +51,7 @@ public class Certificate extends RepresentationModel<Certificate> {
     )
     private List<Tag> tagList;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+
 
     public int getId() {
         return id;

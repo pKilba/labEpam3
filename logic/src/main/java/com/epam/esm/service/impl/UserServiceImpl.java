@@ -35,22 +35,16 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public User findById(long id) throws NotFoundEntityException {
-        //todo check ex or else -> thr
-        User user = userDao.findById(id).get();
-
-        return user;
+        return userDao.findById(id).orElseThrow(() -> new NotFoundEntityException("Not found user"));
     }
 
     @Override
     public void addSpentMoney(long id, BigDecimal addedValue) throws NotFoundEntityException {
-        //todo check ex or else -> thr
-        User user = userDao.findById(id).get();
+        User user = userDao.findById(id).orElseThrow(() -> new NotFoundEntityException("Not found user"));
         user.setSpentMoney(user.getSpentMoney().add(addedValue));
         userDao.update(user);
     }
 
-    //todo !!!
-    //todo мб сделать нормально а не использовать запрос на олл
     @Override
     public List<User> findByMostCost(int page, int size) {
         List<User> user = userDao.findAllWithPagination(page, size).stream()
@@ -60,5 +54,4 @@ public class UserServiceImpl implements UserService {
         Collections.reverse(user);
         return user;
     }
-
 }

@@ -1,5 +1,6 @@
 package com.epam.esm.service.impl;
 
+import com.epam.esm.exception.DuplicateEntityException;
 import com.epam.esm.exception.NotFoundEntityException;
 import com.epam.esm.model.Tag;
 import com.epam.esm.repository.api.TagRepository;
@@ -20,7 +21,6 @@ public class TagServiceImpl implements TagService {
 
     private final TagValidator validator = new TagValidator();
     private final TagRepository tagDao;
-    // private final TagMapper tagMapper;
 
     @Autowired
     public TagServiceImpl(TagRepository tagDao) {
@@ -36,9 +36,9 @@ public class TagServiceImpl implements TagService {
     }
 
     private void validateForExistTag(Tag tag) {
-//        if (tagDao.findByName(tag.getName()).isPresent()) {
-//            throw new DuplicateEntityException(TAG_EXIST);
-//        }
+        if (tagDao.findByName(tag.getName()).isPresent()) {
+            throw new DuplicateEntityException(TAG_EXIST);
+        }
     }
 
     @Override

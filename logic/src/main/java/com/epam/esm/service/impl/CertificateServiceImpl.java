@@ -1,6 +1,5 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.exception.DuplicateEntityException;
 import com.epam.esm.exception.NotFoundEntityException;
 import com.epam.esm.model.Certificate;
@@ -16,23 +15,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 
 @Component
 public class CertificateServiceImpl implements CertificateService {
-
-
-    public static final String TAG_NAME = "tag_name";
-    public static final String PART_NAME = "part_name";
-    public static final String SORT = "sort";
-    public static final String ORDER = "order";
-    public static final String SIZE = "size";
-    public static final String PAGE = "page";
-    public static final String DEFAULT_PAGE = "0";
-    public static final String DEFAULT_SIZE = "10";
 
 
     private static final String CERTIFICATE_EXIST = "Certificate exist";
@@ -67,6 +55,7 @@ public class CertificateServiceImpl implements CertificateService {
     @Transactional
     public void create(Certificate certificate) {
         List<Tag> tagsToAdd = new ArrayList<>();
+        validateForExistCertificates(certificate);
         if (certificate.getTagList() != null) {
             for (Tag tag : certificate.getTagList()) {
                 Optional<Tag> tagOptional = tagDao.findByName(tag.getName());
@@ -81,14 +70,6 @@ public class CertificateServiceImpl implements CertificateService {
         certificateDao.create(certificate);
     }
 
-    private void validateForExistTag(Set<Tag> tags) {
-
-        for (Tag tag : tags) {
-            if (!tagDao.findByName(tag.getName()).isPresent()) {
-                tagDao.create(tag);
-            }
-        }
-    }
 
     private void validateForExistCertificates(Certificate certificate) {
         if (certificateDao.findByName(certificate.getName()).isPresent()) {
@@ -127,29 +108,44 @@ public class CertificateServiceImpl implements CertificateService {
 
     //todo
     @Transactional
-    public CertificateDto updateById(int id, CertificateDto certificateDto) {
+    public Certificate updateById(int id, Certificate certificate) {
 
-//        Certificate certificate = certificateDto.getCertificate();
-//        Set<Tag> tags = new HashSet();
-//        tags.addAll(certificateDto.getTags());
-//        if (!certificateDao.findById(id).isPresent()) {
-//            throw new NotFoundEntityException(CERTIFICATE_NOT_EXIST);
+        Certificate presentCertificate = certificateDao.findById(id).orElseThrow(() -> new NotFoundEntityException(CERTIFICATE_NOT_EXIST));
+
+
+        //todo вынести в отдельную логику ??
+        if (certificate.getName() != presentCertificate.getName()) {
+            presentCertificate.setName(certificate.getName());
+        }
+//        if (certificate.getDescription() != presentCertificate.getDescription()) {
+//            presentCertificate.setDescription(certificate.getDescription());
 //        }
 //
-//        if (certificate != null) {
-//            certificateDao.updateCertificateById(id, certificateDto);
+//        if (certificate.getPrice() != presentCertificate.getPrice()) {
+//            presentCertificate.setPrice(certificate.getPrice());
 //        }
 //
-//        if (tags != null) {
-//            for (Tag tag : tags) {
-//                if (!tagDao.findByName(tag.getName()).isPresent()) {
-//                    tagService.create(tag);
-//                }
-//            }
-//            certificateWithTag.create(findById(id), tags);
+//        if (certificate.getDuration() != presentCertificate.getDuration()) {
+//            presentCertificate.setDuration(certificate.getDuration());
 //        }
-//        return certificateDto;
-        return null;
+
+
+        if (certificate.getTagList() != null) {
+            List<Tag> tags = certificate.getTagList();
+            presentCertificate.setTagList(addTags(tags));
+        }
+
+        return certificateDao.update(presentCertificate);
+    }
+
+    private List<Tag> addTags(List<Tag> tags) {
+        List<Tag> addedTags = new ArrayList<>();
+        for (Tag tag : tags) {
+            Optional<Tag> optionalTag = tagDao.findByName(tag.getName());
+            Tag savedTag = optionalTag.orElseGet(() -> tagDao.create(tag));
+            addedTags.add(savedTag);
+        }
+        return addedTags;
     }
 
 
