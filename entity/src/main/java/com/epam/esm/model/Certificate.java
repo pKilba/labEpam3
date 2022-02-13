@@ -26,6 +26,11 @@ import java.util.Objects;
 @Table(name = "certificates")
 public class Certificate extends RepresentationModel<Certificate> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -49,9 +54,6 @@ public class Certificate extends RepresentationModel<Certificate> {
     )
     private List<Tag> tagList;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
 
     public int getId() {
         return id;
@@ -63,6 +65,18 @@ public class Certificate extends RepresentationModel<Certificate> {
 
 
     public Certificate() {
+    }
+
+
+    public Certificate(int id,String name, String description, BigDecimal price, Timestamp createDate, Timestamp lastUpdateDate, int duration) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.createDate = createDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.duration = duration;
+
     }
 
     public Certificate(String name, String description, BigDecimal price, Timestamp createDate, Timestamp lastUpdateDate, int duration) {

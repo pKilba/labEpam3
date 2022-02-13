@@ -14,11 +14,13 @@ import java.util.Objects;
 @Table(name = "tags")
 public class Tag extends RepresentationModel<Tag> {
 
-    private String name;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    private String name;
+
+
 
     public int getId() {
         return id;
@@ -35,6 +37,13 @@ public class Tag extends RepresentationModel<Tag> {
 
     public Tag() {
     }
+
+    public Tag(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+
 
     public Tag(String name) {
         this.name = name;

@@ -14,12 +14,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "users")
 public class User extends RepresentationModel<User> {
-    private String name;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    private String name;
     @Column(name = "spent_money")
     private BigDecimal spentMoney;
 
@@ -37,6 +37,22 @@ public class User extends RepresentationModel<User> {
     }
 
     public User() {
+    }
+
+    public User(int id, String name, BigDecimal spentMoney) {
+        this.id = id;
+        this.name = name;
+        this.spentMoney = spentMoney;
+    }
+
+    public User(String name, BigDecimal spentMoney) {
+        this.name = name;
+        this.spentMoney = spentMoney;
+    }
+
+    public User(int id, String name)  {
+        this.name = name;
+        this.id = id;
     }
 
     public User(String name) {
