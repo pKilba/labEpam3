@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.InvalidParameterException;
 import java.util.List;
 
+import static com.epam.esm.util.RequestParammetr.DEFAULT_PAGE;
+import static com.epam.esm.util.RequestParammetr.DEFAULT_SIZE;
+import static com.epam.esm.util.RequestParammetr.PAGE;
+import static com.epam.esm.util.RequestParammetr.SIZE;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    public static final String SIZE = "size";
-    public static final String PAGE = "page";
-    public static final String DEFAULT_PAGE = "0";
-    public static final String DEFAULT_SIZE = "10";
-
 
     private final UserService userService;
     private final OrderService orderService;
@@ -58,30 +58,25 @@ public class UserController {
         return users;
     }
 
-
     @GetMapping("/most-cost")
     @ResponseStatus(HttpStatus.OK)
     public List<User> findByMostCost(@RequestParam(value = PAGE, required = false, defaultValue = DEFAULT_PAGE) int page,
                                      @RequestParam(value = SIZE, required = false,
                                              defaultValue = DEFAULT_SIZE) int size) {
-
         requestParametersValidator.paginationParamValid(page, size);
         List<User> users = userService.findByMostCost(page, size);
         users.forEach(userLinkProvider::provideLinks);
         return users;
     }
 
-
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public User findById(@PathVariable long id) throws NotFoundEntityException {
-
         requestParametersValidator.idParamValid(id);
         User user = userService.findById(id);
         userLinkProvider.provideLinks(user);
         return user;
     }
-
 
     @GetMapping("/{id}/orders/{orderId}")
     @ResponseStatus(HttpStatus.OK)
@@ -95,7 +90,6 @@ public class UserController {
         return orderDto;
     }
 
-
     @GetMapping("/{id}/orders")
     @ResponseStatus(HttpStatus.OK)
     public List<Order> getOrdersByUserId(
@@ -105,7 +99,6 @@ public class UserController {
     ) throws InvalidParameterException, NotFoundEntityException {
         requestParametersValidator.paginationParamValid(page, size);
         List<Order> orders = orderService.findAllByUserId(id, page, size);
-
         orders.forEach(orderLinkProvider::provideLinks);
         return orders;
     }

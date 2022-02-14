@@ -14,4 +14,5 @@ public class UserRepositoryImpl extends AbstractRepository<User> implements User
     public UserRepositoryImpl(EntityManager entityManager) {
         super(entityManager, User.class);
     }
+
 }

@@ -21,19 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.epam.esm.util.RequestParammetr.DEFAULT_PAGE;
+import static com.epam.esm.util.RequestParammetr.DEFAULT_SIZE;
+import static com.epam.esm.util.RequestParammetr.PAGE;
+import static com.epam.esm.util.RequestParammetr.PART_NAME;
+import static com.epam.esm.util.RequestParammetr.SIZE;
+import static com.epam.esm.util.RequestParammetr.TAG_NAME;
 
 @RestController
 @RequestMapping("/certificates")
 public class CertificateController {
-
-    //todo const to interface
-    public static final String TAG_NAME = "tag_name";
-    public static final String PART_NAME = "part_name";
-    public static final String SIZE = "size";
-    public static final String PAGE = "page";
-    public static final String DEFAULT_PAGE = "0";
-    public static final String DEFAULT_SIZE = "10";
-
 
     private final CertificateService certificateService;
     private final CertificateLinkProvider certificateLinkProvider;
@@ -49,13 +48,11 @@ public class CertificateController {
     }
 
     @PostMapping
-
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody Certificate certificate,
-                       HttpServletResponse response) {
+    public void create(@RequestBody Certificate certificate) {
         certificateService.create(certificate);
+        certificateLinkProvider.provideLinks(certificate);
     }
-
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -65,41 +62,31 @@ public class CertificateController {
             @RequestParam(name = PAGE, required = false, defaultValue = DEFAULT_PAGE) int page,
             @RequestParam(name = SIZE, required = false, defaultValue = DEFAULT_SIZE) int size
     ) {
-
-
         requestParametersValidator.paginationParamValid(page, size);
         List<Certificate> certificates = certificateService.findAll(tagNames, partName, page, size);
-        certificates.forEach(certificateLinkProvider::provideLinks);
-
-        return certificates;
+        return certificates.stream()
+                .peek(certificateLinkProvider::provideLinks)
+                .collect(Collectors.toList());
     }
 
-
-    //todo
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     public Certificate updateById(@PathVariable("id") int id,
-                                  @RequestBody Certificate сertificate) {
-
-
+                                  @RequestBody Certificate certificate) {
         requestParametersValidator.idParamValid(id);
-        return certificateService.updateById(id, сertificate);
-
+        return certificateService.updateById(id, certificate);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     public Certificate findById(@PathVariable("id") int id) {
-
         requestParametersValidator.idParamValid(id);
         Certificate certificate = certificateService.findById(id);
-
         certificateLinkProvider.provideLinks(certificate);
         return certificate;
     }
-
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -108,6 +95,5 @@ public class CertificateController {
         requestParametersValidator.idParamValid(id);
         certificateService.deleteById(id);
     }
-
 
 }

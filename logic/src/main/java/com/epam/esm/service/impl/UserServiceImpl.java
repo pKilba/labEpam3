@@ -18,16 +18,12 @@ import java.util.stream.Collectors;
 @Component
 public class UserServiceImpl implements UserService {
 
-
     private final UserRepository userDao;
-
 
     @Autowired
     public UserServiceImpl(UserRepository userDao) {
         this.userDao = userDao;
     }
-
-
     public List<User> findAll(int page, int size) {
 
         return userDao.findAllWithPagination(page, size);

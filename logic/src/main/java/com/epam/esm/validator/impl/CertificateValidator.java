@@ -13,7 +13,7 @@ public class CertificateValidator implements Validator<Certificate> {
 
     private static final String NOT_VALID_CERTIFICATE = "Not valid certificate";
     private static final int NAME_MIN_LENGTH = 1;
-    private static final int NAME_MAX_LENGTH = 16;
+    private static final int NAME_MAX_LENGTH = 564;
     private static final int DESCRIPTION_MIN_LENGTH = 1;
     private static final int DESCRIPTION_MAX_LENGTH = 64;
     private static final BigDecimal PRICE_MIN_VALUE = BigDecimal.ONE;
@@ -23,7 +23,6 @@ public class CertificateValidator implements Validator<Certificate> {
 
     @Override
     public boolean isValid(Certificate entity) {
-
         if (isNameValid(entity.getName())
                 && isDescriptionValid(entity.getDescription())
                 && isPriceValid(entity.getPrice())
@@ -32,8 +31,6 @@ public class CertificateValidator implements Validator<Certificate> {
         } else {
             throw new NotValidEntityException(NOT_VALID_CERTIFICATE);
         }
-
-
     }
 
     public boolean isDurationValid(int duration) {

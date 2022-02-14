@@ -14,7 +14,7 @@ public class CertificateLinkProvider extends AbstractLinkProvider<Certificate> {
         this.tagLinkProvider = tagLinkProvider;
     }
 
-    public void provideLinks(Certificate certificate) {
+    public  void provideLinks(Certificate certificate) {
         long id = certificate.getId();
         provideIdLinks(CONTROLLER_CLASS, certificate, id, SELF_LINK, UPDATE_LINK, REPLACE_LINK, DELETE_LINK);
         if (certificate.getTagList() != null) {

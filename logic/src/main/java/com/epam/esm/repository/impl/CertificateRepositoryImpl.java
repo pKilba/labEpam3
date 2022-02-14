@@ -19,7 +19,6 @@ import java.util.Optional;
 @Repository
 public class CertificateRepositoryImpl extends AbstractRepository<Certificate> implements CertificateRepository {
 
-
     private static final String TAG_LIST = "tagList";
 
     @Autowired
@@ -47,7 +46,6 @@ public class CertificateRepositoryImpl extends AbstractRepository<Certificate> i
             predicates.add(buildPredicateByPartInfo(root, partInfo));
         }
 
-        //todo refactr!!!!
         if (!predicates.isEmpty()) {
             query.where(utilBuilderQuery.buildAndPredicates(predicates));
             if (tagNames != null) {
@@ -55,16 +53,13 @@ public class CertificateRepositoryImpl extends AbstractRepository<Certificate> i
                 query.having(builder.greaterThanOrEqualTo(builder.count(root), (long) tagNames.size()));
             }
         }
-
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         query.orderBy(criteriaBuilder.asc(root.get("name")));
-
         return entityManager.createQuery(query)
                 .setFirstResult(page * size)
                 .setMaxResults(size)
                 .getResultList();
     }
-
 
     private Predicate buildPredicateByPartInfo(Root<Certificate> root, String partInfo) {
         String regexValue = utilBuilderQuery.buildRegexValue(partInfo);
@@ -74,12 +69,10 @@ public class CertificateRepositoryImpl extends AbstractRepository<Certificate> i
         return builder.or(predicateByNameInfo, predicateByDescriptionInfo);
     }
 
-
     private Predicate buildPredicateByTagName(Root<Certificate> root, List<String> tagNames) {
         Join<Certificate, Tag> tagJoin = root.join(TAG_LIST);
 
         return utilBuilderQuery.buildOrEqualPredicates(tagJoin, "name", tagNames);
     }
-
 
 }

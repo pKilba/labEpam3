@@ -13,11 +13,11 @@ import java.util.List;
 
 @Repository
 public class OrderRepositoryImpl extends AbstractRepository<Order> implements OrderRepository {
+
     @Autowired
     public OrderRepositoryImpl(EntityManager entityManager) {
         super(entityManager, Order.class);
     }
-
 
     public List<Order> findAllByUserId(long userId, int page, int size) {
         CriteriaQuery<Order> query = buildGetAllQuery(userId);
@@ -26,7 +26,6 @@ public class OrderRepositoryImpl extends AbstractRepository<Order> implements Or
                 .setMaxResults(size)
                 .getResultList();
     }
-
 
     private CriteriaQuery<Order> buildGetAllQuery(long userId) {
         CriteriaQuery<Order> query = builder.createQuery(Order.class);

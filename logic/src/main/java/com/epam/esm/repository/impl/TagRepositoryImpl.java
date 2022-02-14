@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public class TagRepositoryImpl extends AbstractRepository<Tag> implements TagRepository {
+
     @Autowired
     public TagRepositoryImpl(EntityManager entityManager) {
         super(entityManager, Tag.class);

@@ -9,11 +9,9 @@ public class RequestParametersValidator {
     private final int NUMBER_MIN = 0;
 
     public void paginationParamValid(int page, int size) {
-
         if (page < NUMBER_MIN || size <= NUMBER_MIN) {
             throw new ValidationException("Exception with pagination param");
         }
-
     }
 
     public void idParamValid(long id) {

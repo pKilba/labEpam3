@@ -18,21 +18,18 @@ public class TagServiceImpl implements TagService {
 
     private static final String TAG_EXIST = "Tag exist";
     private static final String TAG_NOT_FOUND = "Tag not found";
-
     private final TagValidator validator = new TagValidator();
     private final TagRepository tagDao;
 
     @Autowired
     public TagServiceImpl(TagRepository tagDao) {
         this.tagDao = tagDao;
-
     }
 
     public void create(Tag tag) {
         validator.isValid(tag);
         validateForExistTag(tag);
         tagDao.create(tag);
-
     }
 
     private void validateForExistTag(Tag tag) {
@@ -43,7 +40,6 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> findAll(int page, int size) {
-
         return tagDao.findAllWithPagination(page, size);
     }
 

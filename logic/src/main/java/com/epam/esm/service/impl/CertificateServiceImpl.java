@@ -18,23 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Component
 public class CertificateServiceImpl implements CertificateService {
-
 
     private static final String CERTIFICATE_EXIST = "Certificate exist";
     private static final String CERTIFICATE_NOT_EXIST = "Certificate not exist";
     private static final String CERTIFICATE_NOT_FOUND = "Certificate not found";
-
     private final CertificateRepository certificateDao;
     private final TagRepository tagDao;
     private final TagValidator tagValidator;
     private final CertificateValidator certificateValidator;
     private final TagService tagService;
-
-    //todo interface поставить сюда
-
 
     @Autowired
     public CertificateServiceImpl(CertificateRepository certificateDao,
@@ -49,7 +43,6 @@ public class CertificateServiceImpl implements CertificateService {
         this.certificateValidator = certificateValidator;
         this.tagService = tagService;
     }
-
 
     @Override
     @Transactional
@@ -70,13 +63,11 @@ public class CertificateServiceImpl implements CertificateService {
         certificateDao.create(certificate);
     }
 
-
     private void validateForExistCertificates(Certificate certificate) {
         if (certificateDao.findByName(certificate.getName()).isPresent()) {
             throw new DuplicateEntityException(CERTIFICATE_EXIST);
         }
     }
-
 
     @Override
     public List<Certificate> findAll(
@@ -109,10 +100,7 @@ public class CertificateServiceImpl implements CertificateService {
     //todo
     @Transactional
     public Certificate updateById(int id, Certificate certificate) {
-
         Certificate presentCertificate = certificateDao.findById(id).orElseThrow(() -> new NotFoundEntityException(CERTIFICATE_NOT_EXIST));
-
-
         //todo вынести в отдельную логику ??
         if (certificate.getName() != presentCertificate.getName() && certificate.getName() != null) {
             presentCertificate.setName(certificate.getName());
@@ -128,8 +116,6 @@ public class CertificateServiceImpl implements CertificateService {
         if (certificate.getDuration() != presentCertificate.getDuration() && certificate.getDuration() != 0) {
             presentCertificate.setDuration(certificate.getDuration());
         }
-
-
         if (certificate.getTagList() != null) {
             List<Tag> tags = certificate.getTagList();
             presentCertificate.setTagList(addTags(tags));
@@ -147,6 +133,5 @@ public class CertificateServiceImpl implements CertificateService {
         }
         return addedTags;
     }
-
 
 }

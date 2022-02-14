@@ -18,20 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.epam.esm.util.RequestParammetr.DEFAULT_PAGE;
+import static com.epam.esm.util.RequestParammetr.DEFAULT_SIZE;
+import static com.epam.esm.util.RequestParammetr.PAGE;
+import static com.epam.esm.util.RequestParammetr.SIZE;
+
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
 
-    //todo const to interface
-    public static final String SIZE = "size";
-    public static final String PAGE = "page";
-    public static final String DEFAULT_PAGE = "0";
-    public static final String DEFAULT_SIZE = "10";
-
     private final OrderService orderService;
     private final OrderLinkProvider orderLinkProvider;
     private final RequestParametersValidator requestParametersValidator;
-
 
     @Autowired
     public OrderController(OrderService orderService,
@@ -46,14 +44,9 @@ public class OrderController {
     @ResponseStatus(HttpStatus.OK)
     public List<Order> findAll(@RequestParam(name = PAGE, required = false, defaultValue = DEFAULT_PAGE) int page,
                                @RequestParam(name = SIZE, required = false, defaultValue = DEFAULT_SIZE) int size) {
-
         requestParametersValidator.paginationParamValid(page, size);
-
         List<Order> orders = orderService.findAll(page, size);
-
         orders.forEach(orderLinkProvider::provideLinks);
-
-
         return orders;
     }
 
@@ -61,10 +54,8 @@ public class OrderController {
     @ResponseStatus(HttpStatus.CREATED)
     public Order createOrder(@RequestBody CreateOrderDto createOrderDto
     ) throws NotFoundEntityException {
-
         Order orderDto = orderService.create(createOrderDto);
         return orderDto;
     }
-
 
 }
