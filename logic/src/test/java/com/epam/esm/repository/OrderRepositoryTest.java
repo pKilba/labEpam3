@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +27,9 @@ public class OrderRepositoryTest {
     private static final int DEFAULT_PAGE = 0;
     private static final int DEFAULT_SIZE = 10;
 
-    private static final Order FIRST_ORDER = new Order(1, Timestamp.valueOf("2022-01-25 18:00:16"),);
+    private static final Order FIRST_ORDER = new Order(1, 1,1,Timestamp.valueOf("2022-01-25 18:00:16"), BigDecimal.ONE);
+    private static final Order SECOND_ORDER = new Order(2, 1,1,Timestamp.valueOf("2022-01-25 18:00:16"), BigDecimal.ONE);
+
 
     @Autowired
     private  OrderRepository orderRepository;
@@ -38,7 +41,7 @@ public class OrderRepositoryTest {
         List<Order> userList =
                 orderRepository.findAllWithPagination(DEFAULT_PAGE, DEFAULT_SIZE);
         List<Long> tagName = userList.stream().map(Order::getId).collect(Collectors.toList());
-        Assertions.assertEquals(Arrays.asList(USER.getName(), SECOND_USER.getName()), tagName);
+        Assertions.assertEquals(Arrays.asList(FIRST_ORDER.getId(), SECOND_ORDER.getId()), tagName);
 
     }
 

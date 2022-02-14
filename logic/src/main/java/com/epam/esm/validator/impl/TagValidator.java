@@ -10,7 +10,7 @@ public class TagValidator implements Validator<Tag> {
 
     private static final String NOT_VALID_TAG = "Not valid tag";
     private static final int NAME_MIN_LENGTH = 2;
-    private static final int NAME_MAX_LENGTH = 16;
+    private static final int NAME_MAX_LENGTH = 1000;
 
     @Override
     public boolean isValid(Tag tag) {

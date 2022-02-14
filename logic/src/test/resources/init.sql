@@ -9,3 +9,6 @@ INSERT INTO tags (id, name) VALUES (1,'test1');
 INSERT INTO tags (id, name) VALUES (2,'test2');
 INSERT INTO users (id,name,spent_money) values (1,'user',1.1);
 INSERT INTO users (id,name,spent_money) values (2,'user',1.1);
+INSERT INTO orders(ID, ORDER_DATE, ORDERS_CERTIFICATES_ID, COST, ORDERS_USERS_ID) VALUES (1,'2022-01-25 18:00:16',1,1,1);
+
+INSERT INTO orders(ID, ORDER_DATE, ORDERS_CERTIFICATES_ID, COST, ORDERS_USERS_ID) VALUES (2,'2022-01-25 18:00:16',1,1,1);
