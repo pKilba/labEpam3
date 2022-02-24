@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class CertificateValidator implements Validator<Certificate> {
 
     private static final String NOT_VALID_CERTIFICATE = "Not valid certificate";
-    private static final int NAME_MIN_LENGTH = 1;
+    private static final int NAME_MIN_LENGTH = 3;
     private static final int NAME_MAX_LENGTH = 564;
     private static final int DESCRIPTION_MIN_LENGTH = 1;
     private static final int DESCRIPTION_MAX_LENGTH = 64;

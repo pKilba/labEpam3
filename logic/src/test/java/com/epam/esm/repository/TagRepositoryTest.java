@@ -1,7 +1,6 @@
 package com.epam.esm.repository;
 
 import com.epam.esm.config.ConfigTest;
-import com.epam.esm.model.Certificate;
 import com.epam.esm.model.Tag;
 import com.epam.esm.repository.api.TagRepository;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 @ExtendWith(SpringExtension.class)
 @Transactional
 public class TagRepositoryTest {
-
 
     @Autowired
     private TagRepository tagRepository;
@@ -51,7 +49,6 @@ public class TagRepositoryTest {
                 FIRST_TAG.getId());
         Assertions.assertEquals(FIRST_TAG.getName(), tag.get().getName());
     }
-
 
     @Test
     public void testDeleteByIdShouldDelete() {

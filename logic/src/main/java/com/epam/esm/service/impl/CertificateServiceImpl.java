@@ -48,6 +48,7 @@ public class CertificateServiceImpl implements CertificateService {
     @Transactional
     public void create(Certificate certificate) {
         List<Tag> tagsToAdd = new ArrayList<>();
+        certificateValidator.isValid(certificate);
         validateForExistCertificates(certificate);
         if (certificate.getTagList() != null) {
             for (Tag tag : certificate.getTagList()) {
@@ -97,7 +98,6 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
 
-    //todo
     @Transactional
     public Certificate updateById(int id, Certificate certificate) {
         Certificate presentCertificate = certificateDao.findById(id).orElseThrow(() -> new NotFoundEntityException(CERTIFICATE_NOT_EXIST));

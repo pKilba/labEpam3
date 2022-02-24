@@ -1,7 +1,6 @@
 package com.epam.esm.model;
 
-import org.springframework.hateoas.RepresentationModel;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,38 +9,23 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tags")
-public class Tag extends RepresentationModel<Tag> {
-
+@Table(name = "roles")
+public class Role  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "name")
     private String name;
 
-    public int getId() {
-        return id;
+    public Role(String name) {
+        this.name = name;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public Role() {}
 
     public String getName() {
-
         return name;
-    }
-
-    public Tag() {
-    }
-
-    public Tag(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Tag(String name) {
-        this.name = name;
     }
 
     public void setName(String name) {
@@ -52,21 +36,20 @@ public class Tag extends RepresentationModel<Tag> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Tag tag = (Tag) o;
-        return id == tag.id && Objects.equals(name, tag.name);
+        Role role = (Role) o;
+        return Objects.equals(name, role.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, id);
+        return name != null ? name.hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return "Tag{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
-                '}';
+        final StringBuilder sb = new StringBuilder("Role{");
+        sb.append("name='").append(name).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

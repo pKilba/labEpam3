@@ -1,11 +1,8 @@
 package com.epam.esm.repository;
 
 import com.epam.esm.config.ConfigTest;
-import com.epam.esm.model.Tag;
 import com.epam.esm.model.User;
-import com.epam.esm.repository.api.TagRepository;
 import com.epam.esm.repository.api.UserRepository;
-import com.epam.esm.repository.impl.UserRepositoryImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +30,6 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-
     @Test
     public void testCreateTagShouldCreate() {
         User createdUser = userRepository.findById(USER.getId()).get();
@@ -46,7 +42,5 @@ public class UserRepositoryTest {
                 userRepository.findAllWithPagination(DEFAULT_PAGE, DEFAULT_SIZE);
         List<String> tagName = userList.stream().map(User::getName).collect(Collectors.toList());
         Assertions.assertEquals(Arrays.asList(USER.getName(), SECOND_USER.getName()), tagName);
-
     }
-
 }

@@ -1,6 +1,5 @@
 package com.epam.esm.model;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -17,7 +16,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "orders")
 public class Order extends RepresentationModel<Order> {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

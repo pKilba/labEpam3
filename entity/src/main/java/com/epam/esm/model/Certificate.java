@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
-
 @Entity
 @Table(name = "certificates")
 public class Certificate extends RepresentationModel<Certificate> {
@@ -29,8 +28,6 @@ public class Certificate extends RepresentationModel<Certificate> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -87,7 +84,6 @@ public class Certificate extends RepresentationModel<Certificate> {
         this.lastUpdateDate = lastUpdateDate;
         this.duration = duration;
     }
-
 
     @PrePersist
     protected void onCreate() {

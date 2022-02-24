@@ -4,7 +4,6 @@ import com.epam.esm.exception.DuplicateEntityException;
 import com.epam.esm.exception.NotFoundEntityException;
 import com.epam.esm.exception.NotValidEntityException;
 import com.epam.esm.model.Tag;
-import com.epam.esm.repository.api.TagRepository;
 import com.epam.esm.repository.impl.TagRepositoryImpl;
 import com.epam.esm.service.impl.TagServiceImpl;
 import com.epam.esm.validator.api.Validator;
@@ -19,7 +18,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -29,24 +27,22 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @SpringBootTest
 public class TagServiceTest {
 
-
     @MockBean
     private TagRepositoryImpl tagDao;
-    private Validator<Tag> tagValidator;
+
     @Autowired
     private TagServiceImpl tagService;
+
+    private Validator<Tag> tagValidator;
+
     private static final int DEFAULT_PAGE = 0;
     private static final int DEFAULT_SIZE = 10;
 
     private static final Tag TAG = new Tag("testTag");
 
-
-
     @BeforeEach
     public void initMethod() {
-//        tagDao = Mockito.mock(TagRepositoryImpl.class);
         tagValidator = Mockito.mock(TagValidator.class);
-//        tagService = new TagServiceImpl(tagDao);
     }
 
     @Test
@@ -62,11 +58,7 @@ public class TagServiceTest {
         tagService.create(TAG);
         verify(tagDao).create(TAG);
     }
-//    @Test
-//    public void testCreateShouldThrowsInvalidEntityExceptionWhenInvalid() {
-//        when(tagValidator.isValid(any())).thenReturn(false);
-//        assertThrows(Exception.class, () -> tagService.create(TAG));
-//    }
+
     @Test
     public void testCreateShouldThrowsDuplicateEntityExceptionWhenExist() {
         when(tagValidator.isValid(any())).thenReturn(true);
@@ -98,6 +90,5 @@ public class TagServiceTest {
         tagService.findById(1);
         verify(tagDao).findById(1);
     }
-
 
 }

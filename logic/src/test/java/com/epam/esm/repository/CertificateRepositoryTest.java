@@ -33,7 +33,6 @@ public class CertificateRepositoryTest {
             "description", new BigDecimal(1.10), Timestamp.valueOf("2022-01-25 18:00:16"),
             Timestamp.valueOf("2022-01-25 18:00:16"), 5);
 
-
     private static final Tag FIRST_TAG = new Tag(1, "tag 1");
     private static final int DEFAULT_PAGE = 0;
     private static final int DEFAULT_SIZE = 10;
@@ -51,14 +50,12 @@ public class CertificateRepositoryTest {
         Assertions.assertNotNull(createdCertificate);
     }
 
-
     @Test
     public void testGetAllShouldGet() {
         List<Certificate> certificateList =
                 certificateRepository.findAllWithPagination(DEFAULT_PAGE, DEFAULT_SIZE);
         List<String> certificateName = certificateList.stream().map(Certificate::getName).collect(Collectors.toList());
         Assertions.assertEquals(Arrays.asList(FIRST_CERTIFICATE.getName(), SECOND_CERTIFICATE.getName()), certificateName);
-
     }
 
     @Test
@@ -70,7 +67,6 @@ public class CertificateRepositoryTest {
         List<String> certificateName = certificateList.stream().map(Certificate::getName).collect(Collectors.toList());
         Assertions.assertEquals(Arrays.asList(FIRST_CERTIFICATE.getName(), SECOND_CERTIFICATE.getName()), certificateName);
     }
-
 
     @Test
     public void testFindByIdShouldFind() {
@@ -84,16 +80,13 @@ public class CertificateRepositoryTest {
         String savedName = FIRST_CERTIFICATE.getName();
         FIRST_CERTIFICATE.setName("new name");
         Certificate updatedCertificate = certificateRepository.update(FIRST_CERTIFICATE);
-
         Assertions.assertEquals(updatedCertificate.getName(), "new name");
-
         FIRST_CERTIFICATE.setName(savedName);
     }
 
     @Test
     public void testDeleteByIdShouldDelete() {
         certificateRepository.deleteById(SECOND_CERTIFICATE.getId());
-
         boolean isExist = certificateRepository.findById(SECOND_CERTIFICATE.getId()).isPresent();
         Assertions.assertFalse(isExist);
     }
